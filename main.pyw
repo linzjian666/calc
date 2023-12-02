@@ -3,10 +3,21 @@
 Author: Linzjian666
 Date: 2023-12-02 21:02:50
 LastEditors: Linzjian666
-LastEditTime: 2023-12-02 22:03:55
+LastEditTime: 2023-12-02 22:26:01
 '''
 import tkinter as tk
+import re
 
+def validate_input(input_string):
+    # 定义允许的字符集合，包括数字、运算符和分隔符
+    allowed_chars = r'^[0-9+\-*/().\s]+$'
+    # 使用正则表达式匹配输入字符串
+    match = re.match(allowed_chars, input_string)
+    # 如果匹配成功，返回True；否则返回False
+    if match:
+        return True
+    else:
+        return False
 def button_click(event):
     # 获取按钮上的文本
     text = event.widget.cget("text")
@@ -14,6 +25,11 @@ def button_click(event):
     if text == "=":
         try:
             # 计算结果
+            validate_input(entry.get()) # 验证输入是否合法
+            if entry.get() == "": # 如果输入为空，输出为空
+                entry.delete(0, tk.END)
+                entry.insert(tk.END, "")
+                return
             result = eval(entry.get())
             entry.delete(0, tk.END)
             entry.insert(tk.END, str(result))
